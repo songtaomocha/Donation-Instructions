@@ -57,7 +57,12 @@ def run(root: Path, overwrite: bool, logger: logging.Logger) -> Dict[str, int]:
 
             short_name = extract_short_name(product_name)
             safe_short = sanitize_file_stem(short_name)
-            out_doc_name = f"代捐说明_{safe_short}.docx"
+            safe_counterparty = sanitize_file_stem(counterparty) if counterparty else ""
+            if safe_counterparty:
+                out_doc_stem = f"{safe_counterparty}_代捐说明_{safe_short}"
+            else:
+                out_doc_stem = f"代捐说明_{safe_short}"
+            out_doc_name = f"{out_doc_stem}.docx"
             out_doc_path = build_nonconflict_path(paths["out_doc_dir"] / out_doc_name, overwrite=overwrite)
 
             placeholders = {
